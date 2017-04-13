@@ -47,9 +47,9 @@ class SiteController extends Controller
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
+            // 'error' => [
+            //     'class' => 'yii\web\ErrorAction',
+            // ],
         ];
     }
 
@@ -94,5 +94,8 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+    public function actionError(){
+        echo 123;exit;
     }
 }
