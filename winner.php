@@ -6,7 +6,6 @@
  * @Last Modified by:   JasonX
  * @Last Modified time: 2016-06-17 12:22:56
  */
-echo 123;exit;
 if(isAjax() && validReference()){
   if(isset($_POST['token']) && !isset($_POST['access_token'])){
     $filename = __DIR__.'/'.$_POST['token'].'.log';
@@ -76,6 +75,11 @@ function handleEmail($file){
     $temp = [];
     $str = '';
     foreach ($handle as $k => $v) {
+        if(stripos($v,'%digiarty%')){
+            $arr = explode('%digiarty%', $v);
+            $candidate = $arr[1];
+            $v = $arr[0];
+        }
         $temp = explode('@',$v);
         if(strlen($temp[0]) <= 5 && strlen($temp[0]) > 2){
             $num = 2;
@@ -88,7 +92,11 @@ function handleEmail($file){
         for($i=0;$i<$num;$i++){
             $str .= '*';
         }
-        $handle[$k] = $str.'@'.$temp[1];
+        if(isset($candidate)){
+            $handle[$k] = $candidate.' '.$str.'@'.$temp[1];
+        }else{
+            $handle[$k] = $str.'@'.$temp[1];
+        }
     }
     return json_encode(array_filter($handle));
 }
